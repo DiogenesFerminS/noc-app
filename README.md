@@ -7,6 +7,8 @@
 npm i
 ```
 
+## Renombramos el archivo .env.template a .env y asignamos las variables de entorno
+
 ### Iniciamos la app en modo desarrollo
 ```
 npm run dev

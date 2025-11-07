@@ -1,13 +1,17 @@
+import { LogEntity, LogSeverityLevel } from "../../entities/log.entity.js";
+import type { LogRepository } from "../../repository/log.repository.js";
+
 interface CheckServiceUseCase {
     execute(url: string): Promise<boolean>;
 }
 
-type SuccessCallback = () => void;
-type ErrorCallback = (error: string) => void;
+type SuccessCallback = (() => void) | undefined;
+type ErrorCallback = ((error: string) => void) | undefined;
 
 export class CheckService implements CheckServiceUseCase {
 
     constructor(
+        private readonly logRepository: LogRepository,
         private readonly successCallback: SuccessCallback,
         private readonly errorCallback: ErrorCallback,
     ) {}
@@ -19,16 +23,28 @@ export class CheckService implements CheckServiceUseCase {
             if(!req.ok) {
                 throw new Error(`Error on check service ${url}`)
             }
-            
-            this.successCallback();
+
+            const log = new LogEntity(LogSeverityLevel.low, `SERVICE ${url} IS WORKING`);
+            this.logRepository.saveLog(log);
+
+            this.successCallback && this.successCallback();
             return true;
+
         } catch (error) {
             if (error instanceof Error) {
-                this.errorCallback(error.message);
+
+                const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. ${error.message}` );
+
+                this.logRepository.saveLog(log);
+
+                this.errorCallback && this.errorCallback(error.message);
                 return false;   
             }
             
-            this.errorCallback('Unknow error');
+            const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. UNKNOW ERROR`);
+            this.logRepository.saveLog(log);
+
+            this.errorCallback && this.errorCallback('Unknow error');
             return false;
         }
     }
