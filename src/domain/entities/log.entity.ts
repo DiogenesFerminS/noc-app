@@ -11,14 +11,15 @@ export class LogEntity {
     constructor(
         public level: LogSeverityLevel,
         public message: string,
+        public origin : string,
     ) {
         this.createdAt = new Date();
     }
 
     static getEntityByJson = (json: string): LogEntity => {
-        const {message, level, createdAt} = JSON.parse(json);
+        const {message, level, createdAt, origin} = JSON.parse(json);
 
-        const log = new LogEntity(level, message);
+        const log = new LogEntity(level, message, origin);
         log.createdAt = createdAt;
 
         return log;

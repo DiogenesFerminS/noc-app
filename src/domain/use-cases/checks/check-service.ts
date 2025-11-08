@@ -8,6 +8,8 @@ interface CheckServiceUseCase {
 type SuccessCallback = (() => void) | undefined;
 type ErrorCallback = ((error: string) => void) | undefined;
 
+const origin = 'check-service.ts';
+
 export class CheckService implements CheckServiceUseCase {
 
     constructor(
@@ -24,7 +26,7 @@ export class CheckService implements CheckServiceUseCase {
                 throw new Error(`Error on check service ${url}`)
             }
 
-            const log = new LogEntity(LogSeverityLevel.low, `SERVICE ${url} IS WORKING`);
+            const log = new LogEntity(LogSeverityLevel.low, `SERVICE ${url} IS WORKING`, origin);
             this.logRepository.saveLog(log);
 
             this.successCallback && this.successCallback();
@@ -33,7 +35,7 @@ export class CheckService implements CheckServiceUseCase {
         } catch (error) {
             if (error instanceof Error) {
 
-                const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. ${error.message}` );
+                const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. ${error.message}`, origin );
 
                 this.logRepository.saveLog(log);
 
@@ -41,7 +43,7 @@ export class CheckService implements CheckServiceUseCase {
                 return false;   
             }
             
-            const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. UNKNOW ERROR`);
+            const log = new LogEntity(LogSeverityLevel.high, `SERVICE ${url} IS NOT OK. UNKNOW ERROR`, origin);
             this.logRepository.saveLog(log);
 
             this.errorCallback && this.errorCallback('Unknow error');
