@@ -1,20 +1,20 @@
-# APP DE MONITOREO DE SERVICIOS 
+# NOC - Network Operations Center
 
-## PARA LEVANTAR LA APP EN MODO DEV
+## Steps to start the project 
 
-### Reconstruimos los modulos de node
+### Rebuild node modules
 ```
 npm i
 ```
 
-### Renombramos el archivo .env.template a .env y asignamos las variables de entorno
+### Rename the .env.template file to .env and assign the environment variables
 
-### Levantamos las bases de datos con el comando
+### Start the databases with the command
 ```
 docker compose up -d
 ```
 
-### Iniciamos la app en modo desarrollo
+### Start the app in development mode
 ```
 npm run dev
 ```
