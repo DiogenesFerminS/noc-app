@@ -38,18 +38,25 @@ export class EmailService {
         }
     };
 
-    sendEmailWithFileSystemLogs(to: string | string[]) {
-        const subject = 'Logs del servidor';
+    sendEmailWithFileSystemLogs(to: string | string[], onlyHigh: boolean = false) {
+        const subject = onlyHigh
+            ? 'Alerta: log de severidad alta - NOC'
+            : 'Logs del servidor - NOC';
+
+        const detail = onlyHigh
+            ? 'Se detectó un log de severidad alta (high). Se adjunta el detalle.'
+            : 'Se adjuntan todos los logs registrados.';
+
         const htmlBody = `
         <h3>Monitoreo de servicios - NOC</h3>
         <p>Sitema desarrollado por Diogenes Fermin</p>
-        <p>Ver logs adjuntos</p>
+        <p>${detail}</p>
         `;
 
         const attachements:Attachement[] = [
-            {filename: 'logs-all.log', path: './logs/logs-all.log'},
-            {filename: 'logs-high.log', path: './logs/logs-high.log'},
-            {filename: 'logs-medium.log', path: './logs/logs-medium.log'}
+            onlyHigh
+                ? {filename: 'logs-high.log', path: './logs/logs-high.log'}
+                : {filename: 'logs-all.log', path: './logs/logs-all.log'}
         ];
 
         return this.sendEmail({

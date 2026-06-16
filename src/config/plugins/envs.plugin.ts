@@ -15,5 +15,8 @@ export const envs = {
     POSTGRES_DB: env.get('POSTGRES_DB').required().asString(),
     POSTGRES_PASSWORD: env.get('POSTGRES_PASSWORD').required().asString(),
 
-    DATABASE_URL: env.get('DATABASE_URL').required().asString()
+    DATABASE_URL: env.get('DATABASE_URL').required().asString(),
+
+    // Endpoint de Odoo que expone los dominios a monitorear y sus correos.
+    NOC_CONFIG_URL: env.get('NOC_CONFIG_URL').default('http://localhost:8069/noc/config').asString(),
 }

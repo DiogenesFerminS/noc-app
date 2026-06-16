@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+logs/
+src/generated/
+mongo/
+postgres/
+CLAUDE.md
+.claude/
+skills-lock.json

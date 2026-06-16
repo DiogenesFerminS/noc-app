@@ -71,10 +71,20 @@ export class FileSystemDataSource implements LogDataSource {
 
             case LogSeverityLevel.high:
                 return this.getJsonFromFile(this.highLogsPath);
-                
+
             default:
                 throw new Error(`${severityLevel} not implemented`)
         }
+    }
+
+    async clearLogs(): Promise<void> {
+        [
+            this.allLogsPath,
+            this.mediumLogsPath,
+            this.highLogsPath,
+        ].forEach((path) => {
+            fs.writeFileSync(path, '');
+        });
     }
 
 }

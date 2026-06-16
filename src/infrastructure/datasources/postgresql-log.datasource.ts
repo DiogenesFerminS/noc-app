@@ -37,4 +37,8 @@ export class PostgresLogDatasource implements LogDataSource {
         return dbLogs.map((log) => LogEntity.getEntityByObject(log));
     }
 
+    async clearLogs(): Promise<void> {
+        // El histórico en PostgreSQL se conserva; solo se limpian los logs del file system.
+    }
+
 }

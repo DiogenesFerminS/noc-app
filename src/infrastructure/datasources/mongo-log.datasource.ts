@@ -26,4 +26,8 @@ export class MongoLogDatasource implements LogDataSource {
         return logs;
     }
 
+    async clearLogs(): Promise<void> {
+        // El histórico en Mongo se conserva; solo se limpian los logs del file system.
+    }
+
 }
